@@ -28,6 +28,7 @@ RUN \
     echo "install system dependencies" && \
     apt-get update -qq && \
     apt-get install -y build-essential libpq-dev imagemagick libmagickwand-dev libsqlite3-dev && \
+    apt-get install -y nodejs && \
     echo "install ruby dependencies" && \
     bundle install && \
     npm install yarn -g && \
