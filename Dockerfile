@@ -30,6 +30,7 @@ RUN \
     apt-get install -y build-essential libpq-dev imagemagick libmagickwand-dev libsqlite3-dev && \
     echo "install ruby dependencies" && \
     bundle install && \
+    npm install yarn -g && \
     yarn install && \
     bundle exec rake assets:precompile
 
