@@ -45,11 +45,11 @@ Rails.application.configure do
   # config.action_cable.allowed_request_origins = [ 'http://example.com', /http:\/\/example.*/ ]
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
-  config.force_ssl = true
+  config.force_ssl = false
 
   # Use the lowest log level to ensure availability of diagnostic information
   # when problems arise.
-  config.log_level = :debug
+  config.log_level = :info
 
   # Prepend all log lines with the following tags.
   config.log_tags = [ :request_id ]
@@ -92,8 +92,11 @@ Rails.application.configure do
   config.active_record.dump_schema_after_migration = false
 
   # Devise default url options
-  config.action_mailer.default_url_options = { host: 'www.notebook.ai' }
-  config.active_job.default_url_options    = { host: 'www.notebook.ai' }
+  # config.action_mailer.default_url_options = { host: 'www.notebook.ai' }
+  # config.active_job.default_url_options    = { host: 'www.notebook.ai' }
+  config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
+  config.active_job.default_url_options    = { host: 'localhost', port: 3000 }
+
   ActionMailer::Base.smtp_settings = {
     :address        => "smtp.sendgrid.net",
     :port           => 587,
@@ -110,9 +113,12 @@ Rails.application.configure do
   # password:       ENV['SENDGRID_API_KEY']
 
   # S3 settings for Paperclip uploads
-  config.paperclip_defaults = {
+  # config.paperclip_defaults = {}
+
+  config.paperclip_defaults  = {
     storage: :s3,
     s3_credentials: {
+      s3_host_name:      "s3-#{ENV['AWS_REGION']}.amazonaws.com",
       bucket:            ENV.fetch('S3_BUCKET_NAME',        'notebook-content-uploads'),
       s3_region:         ENV.fetch('AWS_REGION',            'us-east-1'),
       access_key_id:     ENV.fetch('AWS_ACCESS_KEY_ID'),
@@ -121,6 +127,9 @@ Rails.application.configure do
   }
 
   # Set production Stripe API key
-  Stripe.api_key                = ENV['STRIPE_API_KEY']
-  config.stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
+  # Stripe.api_key                = ENV['STRIPE_API_KEY']
+  # config.stripe_publishable_key = ENV['STRIPE_PUBLISHABLE_KEY']
+  # Set test-mode Stripe API key
+  Stripe.api_key = "sk_test_v37uWbseyPct6PpsfjTa3y1l"
+  config.stripe_publishable_key = 'pk_test_eXI4iyJ2gR9UOGJyJERvDlHF'
 end

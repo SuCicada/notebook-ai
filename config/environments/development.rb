@@ -68,7 +68,7 @@ Rails.application.configure do
 
   # Paperclip config for image uploads
   config.paperclip_defaults = {
-    storage: :s3,
+    storage: :disk,
     s3_credentials: {
       bucket:            ENV.fetch('S3_BUCKET_NAME',        'notebook-content-uploads'),
       s3_region:         ENV.fetch('AWS_REGION',            'us-east-1'),

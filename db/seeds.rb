@@ -13,6 +13,12 @@ end
 tolkien = User.create(name: 'JRRTolkien',
                       email: 'tolkien@example.com',
                       password: 'Mellon')
+User.create(
+  name: 'VIP',
+  email: 'sucicada@sucicada.vip',
+  password: 'sucicada',
+  selected_billing_plan_id: 6
+)
 
 tester = User.create(
   name: 'Test Test',
