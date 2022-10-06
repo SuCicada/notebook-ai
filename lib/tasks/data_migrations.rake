@@ -66,7 +66,7 @@ namespace :data_migrations do
             referencing_page = link.send(referencing_page_type.downcase)
             referenced_page  = link.send(relation_params[:through_relation])
           end
-          
+
           if (referencing_page.nil? || referenced_page.nil? || referencing_page.user.nil? || referenced_page.user.nil?)
             # Don't do anything here -- one of the pages has since been deleted
             # puts "    Skipping a deleted-page reference"
@@ -143,7 +143,7 @@ namespace :data_migrations do
 
     # Turn SQL logging back on
     ActiveRecord::Base.logger = old_logger
-    
+
     puts "Done!"
     puts "Total time elapsed: T+#{(DateTime.current - start_time).to_i}"
   end
@@ -216,6 +216,12 @@ namespace :data_migrations do
   desc "Add developer billing plans"
   task create_developer_billing_plans: :environment do
     # TODO
+    User.create(
+      name: 'VIP',
+      email: 'sucicada@sucicada.vip',
+      password: 'sucicada',
+      selected_billing_plan_id: 6
+    )
   end
 
   desc "Add bandwidth bonuses to billing plans"
@@ -263,8 +269,8 @@ namespace :data_migrations do
     to_migrate.first(100).each do |user_id|
         user = User.find(user_id)
         puts "Migrating user ##{user_id} #{user.email} (#{users_migrated}/#{to_migrate.count})"
-        
-        ActiveRecord::Base.transaction do 
+
+        ActiveRecord::Base.transaction do
             Rails.application.config.content_types[:all].each do |content_type|
                 puts "\tMigrating #{content_type.name}..."
                 content_type.create_default_attribute_categories(user)

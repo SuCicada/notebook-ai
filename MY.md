@@ -17,6 +17,22 @@ PKG_CONFIG_PATH="/opt/homebrew/opt/imagemagick@6/lib/pkgconfig" gem install rmag
 
 ```
 
+## prepare database
+```bash
+source ./load_env.sh
+rake db:create
+rake db:migrate
+rake billing_plans:initialize_defaults
+rake data_migrations:create_default_billing_plans
+rake data_migrations:billing_plan_bandwidths
+rake data_migrations:initialize_user_bandwidths
+rake data_migrations:create_developer_billing_plans
+
+rake db:seed
+
+
+```
+
 docker build  \
 --build-arg "HTTP_PROXY=http://host.docker.internal:10809/" \
 --build-arg "HTTPS_PROXY=http://host.docker.internal:10809/" \
@@ -24,6 +40,9 @@ docker build  \
 -t sucicada/notebook.ai:latest  .
 
 docker build . --network host -t sucicada/notebook.ai:latest  
+
+docker run -itd --name notebook.ai -p 41410:3000 --env-file .env sucicada/notebook.ai
+
 
 ## knowledge
 Sidekiq need redis 
